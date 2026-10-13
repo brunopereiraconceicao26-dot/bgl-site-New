@@ -83,7 +83,7 @@
         if(!ok&&!bad)bad=el;
       });
       if(bad){msg.className='msg bad';msg.textContent=bad.id==='lgpd'?'Marque a autorização de uso dos dados para enviar.':'Revise os campos destacados para enviar.';bad.focus();return}
-      function fallback(){msg.className='msg';msg.innerHTML='';var a=document.createElement('a');a.href=waLink();a.target='_blank';a.rel='noopener';a.textContent='Enviar esta solicitação pelo WhatsApp →';msg.appendChild(document.createTextNode('Para concluir, '));msg.appendChild(a)}
+      function fallback(){msg.className='msg';msg.innerHTML='';var a=document.createElement('a');a.href=waLink();a.target='_blank';a.rel='noopener';a.textContent='Enviar esta solicitação pelo WhatsApp';msg.appendChild(document.createTextNode('Para concluir, '));msg.appendChild(a)}
       if(!/bglgroup\.com\.br$|netlify\.app$/.test(location.hostname)){fallback();return}
       msg.className='msg';msg.textContent='Enviando…';
       fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()})
