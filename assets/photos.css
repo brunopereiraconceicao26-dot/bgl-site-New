@@ -1,0 +1,39 @@
+/* BGL Group — fotos do site
+   ------------------------------------------------------------------
+   Todas as fotos do site estão aqui, uma por linha.
+   Para trocar por uma foto própria da BGL:
+     1. coloque o arquivo em assets/img/ (ex.: assets/img/subestacao.jpg,
+        de preferência JPG com 2000 px de largura e até ~400 KB);
+     2. troque o endereço da linha correspondente por url(img/subestacao.jpg).
+   Fotos atuais: Unsplash (licença Unsplash, uso comercial livre),
+   usadas como imagens ilustrativas do setor.
+   ------------------------------------------------------------------ */
+
+/* Banner principal (home) */
+.ph-hero-main   {--img:url("https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=2200&q=72")}  /* torres de transmissão */
+.ph-hero-oil    {--img:url("https://images.unsplash.com/photo-1509390144018-eeaf65052242?auto=format&fit=crop&w=2200&q=72")}  /* transformador em subestação */
+.ph-hero-thermo {--img:url("https://images.unsplash.com/photo-1544724569-5f546fd6f2b5?auto=format&fit=crop&w=2200&q=72")}    /* painel com disjuntores */
+.ph-hero-net    {--img:url("https://images.unsplash.com/photo-1594915440248-1e419eba6611?auto=format&fit=crop&w=2200&q=72")}  /* fibra óptica em switch */
+
+/* Soluções (cartões da home e topo das páginas) */
+.ph-eletrica    {--img:url("https://images.unsplash.com/photo-1555963966-b7ae5404b6ed?auto=format&fit=crop&w=1800&q=70")}  /* técnico ajustando cabo de aço */
+.ph-ensaios     {--img:url("https://images.unsplash.com/photo-1758101755915-462eddc23f57?auto=format&fit=crop&w=1800&q=70")}  /* medição com multímetro */
+.ph-telecom     {--img:url("https://images.unsplash.com/photo-1604869515882-4d10fa4b0492?auto=format&fit=crop&w=1800&q=70")}  /* fibra óptica iluminada */
+.ph-automacao   {--img:url("https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=1800&q=70")}  /* casa inteligente pelo celular */
+.ph-seguranca   {--img:url("https://images.unsplash.com/photo-1708807472445-d33589e6b090?auto=format&fit=crop&w=1800&q=70")}  /* central de monitoramento */
+.ph-incendio    {--img:url("https://images.unsplash.com/photo-1785682117437-91f081385f6b?auto=format&fit=crop&w=1800&q=70")}  /* teto com tubulação de sprinklers */
+
+/* Segmentos (home) */
+.ph-seg-ind     {--img:url("https://images.unsplash.com/photo-1717386255773-1e3037c81788?auto=format&fit=crop&w=1400&q=70")}  /* indústria */
+.ph-seg-ene     {--img:url("https://images.unsplash.com/photo-1560279966-2d681f3d4dfc?auto=format&fit=crop&w=1400&q=70")}    /* usina hidrelétrica */
+.ph-seg-com     {--img:url("https://images.unsplash.com/photo-1516182715020-07f5d1eeba54?auto=format&fit=crop&w=1400&q=70")}  /* edifício comercial */
+.ph-seg-con     {--img:url("https://images.unsplash.com/photo-1580041065738-e72023775cdc?auto=format&fit=crop&w=1400&q=70")}    /* condomínio: área de lazer com piscina */
+.ph-seg-res     {--img:url("https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1400&q=70")}  /* residência junto à piscina */
+
+/* Páginas institucionais e faixas */
+.ph-empresa     {--img:url("https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=2000&q=70")}  /* eletricista com capacete */
+.ph-resp        {--img:url("https://images.unsplash.com/photo-1581094488379-6a10d04c0f04?auto=format&fit=crop&w=1400&q=70")}  /* equipe analisando planta */
+.ph-plataformas {--img:url("https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=2000&q=70")}    /* infraestrutura de rede */
+.ph-contato     {--img:url("https://images.unsplash.com/photo-1556341984-69c93f636618?auto=format&fit=crop&w=2000&q=70")}    /* torre ao entardecer */
+.ph-etica       {--img:url("https://images.unsplash.com/photo-1509390673020-a5b2450e33f1?auto=format&fit=crop&w=2000&q=70")}  /* subestação */
+.ph-cta         {--img:url("https://images.unsplash.com/photo-1610028290816-5d937a395a49?auto=format&fit=crop&w=2200&q=70")}  /* linhas ao pôr do sol */
