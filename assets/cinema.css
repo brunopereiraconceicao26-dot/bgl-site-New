@@ -1,0 +1,122 @@
+/* BGL Group — camada cinematográfica
+   Fotografia em tela cheia com tratamento de cor único (sombras navy, realces frios,
+   saturação contida), aproximação lenta no banner e textos sobre gradientes profundos.
+   As fotos vêm de assets/photos.css (variável --img). */
+
+:root{
+  --grade:saturate(.82) contrast(1.06) brightness(.92);
+  --shade:2,11,31;            /* abismo BGL em RGB, para os gradientes */
+  --ease-cine:cubic-bezier(.22,.61,.36,1);
+}
+
+/* ---------- camada de imagem genérica ---------- */
+.pimg{position:absolute;inset:0;z-index:0;background:var(--img) center/cover no-repeat,#020B1F;filter:var(--grade)}
+.pimg::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none}
+/* granulação de filme, muito sutil */
+.grain .pimg::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.08;mix-blend-mode:overlay;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ---------- banner principal ---------- */
+.hero{background:#020B1F}
+.hero::before{display:none}                         /* o contorno do hexágono sai do banner fotográfico */
+.hero .slide{min-height:min(92vh,880px);padding-block:120px 150px;align-items:flex-end}
+.hero .slide .art.pimg{transform:scale(1.1);transform-origin:70% 50%;transition:transform 9s linear}
+.hero .slide.on .art.pimg{transform:scale(1)}
+.hero .slide .art.pimg::after{background:
+  linear-gradient(90deg,rgba(var(--shade),.94) 0%,rgba(var(--shade),.78) 34%,rgba(var(--shade),.25) 68%,rgba(var(--shade),.1) 100%),
+  linear-gradient(0deg,rgba(var(--shade),.92) 0%,rgba(var(--shade),0) 42%),
+  linear-gradient(180deg,rgba(var(--shade),.55) 0%,rgba(var(--shade),0) 22%)}
+.hero .slide.warm .art.pimg::after{background:
+  radial-gradient(38% 46% at 74% 44%,rgba(255,150,40,.42),rgba(226,81,42,.2) 45%,rgba(90,26,122,0) 75%),
+  linear-gradient(90deg,rgba(var(--shade),.94) 0%,rgba(var(--shade),.78) 34%,rgba(var(--shade),.3) 68%,rgba(var(--shade),.12) 100%),
+  linear-gradient(0deg,rgba(var(--shade),.92) 0%,rgba(var(--shade),0) 42%)}
+.hero .slide .wrap{position:relative;z-index:2}
+.hero .slide h1,.hero .slide h2{font-size:clamp(40px,5.8vw,84px);line-height:.98;font-weight:560;font-stretch:112%;letter-spacing:-.035em;max-width:16ch;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,.25)}
+.hero .slide p.sub{font-size:clamp(17px,1.45vw,21px);color:#C7D1E0;max-width:48ch;margin-top:26px}
+.hero .slide .eyebrow{color:#DCE3EC;font-size:14px}
+.hero .slide .ctas{margin-top:44px}
+.hero .slide .wrap>*{opacity:0;transform:translateY(18px);transition:opacity .9s var(--ease-cine),transform .9s var(--ease-cine)}
+.hero .slide.on .wrap>*{opacity:1;transform:none}
+.hero .slide.on .wrap>*:nth-child(2){transition-delay:.12s}
+.hero .slide.on .wrap>*:nth-child(3){transition-delay:.24s}
+.hero .slide.on .wrap>*:nth-child(4){transition-delay:.36s}
+.hero .hero-ctrl{bottom:44px;z-index:3}
+.hero .slide-num{color:#C7D1E0}
+@media (max-width:760px){
+  .hero .slide{min-height:min(88vh,720px);padding-block:96px 120px}
+  .hero .slide .art.pimg::after{background:linear-gradient(0deg,rgba(var(--shade),.96) 0%,rgba(var(--shade),.7) 55%,rgba(var(--shade),.35) 100%)}
+}
+
+/* ---------- cartões de solução ---------- */
+.solgrid{gap:28px}
+.solcard .th{aspect-ratio:4/3;background:#020B1F}
+.solcard .th .pimg{transition:transform 1.4s var(--ease-cine),filter .6s}
+.solcard .th .pimg::after{background:linear-gradient(180deg,rgba(var(--shade),0) 45%,rgba(var(--shade),.55) 100%)}
+.solcard:hover .th .pimg{transform:scale(1.06);filter:saturate(.95) contrast(1.08) brightness(.98)}
+.solcard .th .ix{position:absolute;z-index:2;left:20px;bottom:16px;font:500 12px/1 var(--f-mono);letter-spacing:.14em;color:#DCE3EC}
+.solcard .bd{padding-top:24px}
+.solcard h3{font-size:24px}
+
+/* ---------- segmentos: foto que acompanha a aba ---------- */
+.seg-panel{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+.seg-media{grid-column:1/-1;position:relative;aspect-ratio:21/8;overflow:hidden;background:#020B1F;
+  clip-path:polygon(0 0,calc(100% - 26px) 0,100% 15px,100% 100%,26px 100%,0 calc(100% - 15px))}
+.seg-media .pimg{opacity:0;transform:scale(1.04);transition:opacity .9s var(--ease-cine),transform 6s linear}
+.seg-media .pimg.on{opacity:1;transform:scale(1)}
+.seg-media .pimg::after{background:linear-gradient(90deg,rgba(var(--shade),.7) 0%,rgba(var(--shade),.1) 60%)}
+.seg-media .cap{position:absolute;z-index:2;left:clamp(20px,3vw,40px);bottom:clamp(18px,2.6vw,32px);color:#fff;font:560 clamp(26px,3.4vw,46px)/1 var(--f-display);font-stretch:112%;letter-spacing:-.03em}
+@media (max-width:860px){.seg-media{aspect-ratio:16/9}}
+
+/* ---------- responsabilidade técnica: selo sobre a foto ---------- */
+.eng{align-items:stretch}
+.seal-wrap{position:relative;min-height:520px;overflow:hidden;display:flex;align-items:flex-end;padding:clamp(18px,2.4vw,28px);
+  clip-path:polygon(0 0,calc(100% - 26px) 0,100% 15px,100% 100%,26px 100%,0 calc(100% - 15px))}
+.seal-wrap .pimg::after{background:linear-gradient(0deg,rgba(var(--shade),.85) 0%,rgba(var(--shade),.1) 60%)}
+.seal-wrap .seal{position:relative;z-index:2;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:0;border-radius:2px;color:#08142B}
+.seal-wrap .seal p{color:#4E5B72}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .seal-wrap .seal{background:rgba(13,25,50,.9);color:var(--fg)}:root:not([data-theme="light"]) .seal-wrap .seal p{color:var(--muted)}}
+:root[data-theme="dark"] .seal-wrap .seal{background:rgba(13,25,50,.9);color:var(--fg)}
+@media (max-width:900px){.seal-wrap{min-height:440px}}
+
+/* ---------- topo das páginas internas ---------- */
+.phero.cine{background:#020B1F;min-height:min(72vh,640px);display:flex;align-items:flex-end}
+.phero.cine::before{display:none}
+.phero.cine>.wrap{display:block;width:100%;padding-block:140px clamp(56px,7vw,96px);position:relative;z-index:2}
+.phero.cine>.wrap>div{max-width:760px}
+.phero.cine .pimg::after{background:
+  linear-gradient(90deg,rgba(var(--shade),.93) 0%,rgba(var(--shade),.74) 40%,rgba(var(--shade),.2) 80%),
+  linear-gradient(0deg,rgba(var(--shade),.9) 0%,rgba(var(--shade),0) 50%)}
+.phero.cine .pimg{animation:cine-in 2.4s var(--ease-cine) both}
+.phero.cine h1{font-size:clamp(38px,5vw,72px);font-weight:560;font-stretch:112%;line-height:1}
+.phero.cine .lead{color:#C7D1E0;max-width:56ch}
+.phero.cine .art{display:none}
+@keyframes cine-in{from{transform:scale(1.08);opacity:.4}to{transform:scale(1);opacity:1}}
+@media (max-width:760px){.phero.cine .pimg::after{background:linear-gradient(0deg,rgba(var(--shade),.95) 0%,rgba(var(--shade),.6) 60%,rgba(var(--shade),.4) 100%)}}
+
+/* Código de Ética */
+.eth-hero.cine{position:relative;overflow:hidden;background:#020B1F;padding-block:150px 72px}
+.eth-hero.cine>.wrap{position:relative;z-index:2}
+.eth-hero.cine .pimg::after{background:linear-gradient(90deg,rgba(var(--shade),.94) 0%,rgba(var(--shade),.7) 50%,rgba(var(--shade),.35) 100%),linear-gradient(0deg,rgba(var(--shade),.9),rgba(var(--shade),0) 60%)}
+
+/* ---------- chamada final sobre foto ---------- */
+.ctaband.cine{position:relative;overflow:hidden;background:#020B1F}
+.ctaband.cine>.wrap{position:relative;z-index:2;padding-block:clamp(96px,12vw,168px)}
+.ctaband.cine .pimg{background-position:center 60%}
+.ctaband.cine .pimg::after{background:linear-gradient(90deg,rgba(var(--shade),.92) 0%,rgba(var(--shade),.6) 55%,rgba(var(--shade),.35) 100%)}
+.ctaband.cine h2{font-size:clamp(32px,4vw,56px);font-weight:560;font-stretch:112%;max-width:18ch}
+.ctaband.cine p{color:#C7D1E0;font-size:18px}
+
+/* ---------- entrada suave ao rolar ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .js [data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .9s var(--ease-cine),transform .9s var(--ease-cine)}
+  .js [data-reveal].in{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero .slide .art.pimg,.seg-media .pimg,.solcard .th .pimg{transition:opacity .3s!important;transform:none!important}
+  .phero.cine .pimg{animation:none}
+}
+
+/* ---------- rodapé ---------- */
+.f-bot .img-note{opacity:.75}
+
+.hero .slide-num{white-space:nowrap}

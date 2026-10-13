@@ -48,9 +48,20 @@
       var s=seg[id];$('#segT').textContent=s[0];$('#segD').textContent=s[1];
       var l=$('#segL');l.innerHTML='';
       s[2].forEach(function(x){var a=document.createElement('a');a.href=x[1];a.textContent=x[0];l.appendChild(a)});
+      $$('.seg-media .pimg').forEach(function(p){p.classList.toggle('on',p.getAttribute('data-seg')===id)});
+      var cap=$('#segCap');if(cap)cap.textContent=s[0];
     }
     tabs.forEach(function(t){t.addEventListener('click',function(){showSeg(t.id)})});
     showSeg('tab-ind');
+  }
+
+  /* Entrada suave ao rolar */
+  var rv=$$('[data-reveal]');
+  if(rv.length){
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:.08});
+      rv.forEach(function(el,i){el.style.transitionDelay=(el.classList.contains('solcard')?(i%3)*90:0)+'ms';io.observe(el)});
+    }else{rv.forEach(function(el){el.classList.add('in')})}
   }
 
   /* Sumário do código de ética */
