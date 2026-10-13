@@ -66,7 +66,7 @@
   /* Formulário */
   var f=$('#cf');
   if(f){
-    var areaMap={eletrica:'Elétrica',ensaios:'Ensaios e diagnóstico',telecom:'Telecom',automacao:'Automação e sistemas inteligentes',sistemas:'Desenvolvimento de aplicações',seguranca:'CFTV e controle de acesso',incendio:'Alarme de incêndio',oilscan:'BGL OilScan',thermo:'BGL Thermo Intelligence'};
+    var areaMap={eletrica:'Elétrica',ensaios:'Ensaios e diagnóstico',telecom:'Telecom',automacao:'Automação e sistemas inteligentes',sistemas:'Desenvolvimento de aplicações',seguranca:'CFTV e controle de acesso',incendio:'Alarme de incêndio',oilscan:'BGL OilScan',thermo:'BGL Thermo Intelligence',netscan:'BGL NetScan'};
     var h=(location.hash||'').slice(1);if(areaMap[h])$('#area').value=areaMap[h];
     var msg=$('#fmsg');
     function waLink(){
