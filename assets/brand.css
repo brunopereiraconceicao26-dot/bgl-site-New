@@ -1,0 +1,110 @@
+/* BGL Group — camada de marca
+   Elemento assinatura: o hexágono bipartido do emblema BGL (metade navy, metade platina).
+   Ele aparece em quatro lugares e em nenhum outro: na transição entre páginas, no marcador
+   dos títulos de seção, no grande contorno do banner e na marca d'água do rodapé. */
+
+:root{
+  --hex-navy:#123E86; --hex-navy-deep:#001848; --hex-plat:#D5DAE1; --hex-steel:#9BA5B4;
+  --hex-pts-0:50% 50%,50% 50%,50% 50%,50% 50%,50% 50%,50% 50%;
+  --ease-out:cubic-bezier(.16,1,.3,1); --ease-in:cubic-bezier(.7,0,.84,0);
+}
+
+/* ---------- transição entre páginas: o hexágono se fecha e se abre ---------- */
+@keyframes bgl-hex-open{
+  from{clip-path:polygon(50% calc(50% - 130vmax),calc(50% + 112.6vmax) calc(50% - 65vmax),calc(50% + 112.6vmax) calc(50% + 65vmax),50% calc(50% + 130vmax),calc(50% - 112.6vmax) calc(50% + 65vmax),calc(50% - 112.6vmax) calc(50% - 65vmax))}
+  to{clip-path:polygon(50% 50%,50% 50%,50% 50%,50% 50%,50% 50%,50% 50%)}
+}
+@keyframes bgl-hex-close{
+  from{clip-path:polygon(50% 50%,50% 50%,50% 50%,50% 50%,50% 50%,50% 50%)}
+  to{clip-path:polygon(50% calc(50% - 130vmax),calc(50% + 112.6vmax) calc(50% - 65vmax),calc(50% + 112.6vmax) calc(50% + 65vmax),50% calc(50% + 130vmax),calc(50% - 112.6vmax) calc(50% + 65vmax),calc(50% - 112.6vmax) calc(50% - 65vmax))}
+}
+@keyframes bgl-emblem-out{to{opacity:0;transform:translate(-50%,-50%) scale(.82)}}
+@keyframes bgl-emblem-in{from{opacity:0;transform:translate(-50%,-50%) scale(1.12)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes bgl-emblem-intro{0%{opacity:0;transform:translate(-50%,-50%) scale(.9)}35%,70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(.82)}}
+
+/* cortina navy (html::after) e emblema (html::before), visíveis desde a primeira pintura */
+html.bgl-cover::after,html.bgl-leaving::after{
+  content:"";position:fixed;inset:0;z-index:2147483646;pointer-events:none;
+  background:
+    radial-gradient(60% 60% at 50% 46%,rgba(31,90,166,.38),rgba(31,90,166,0) 70%),
+    linear-gradient(180deg,#00133D 0%,#020B1F 100%);
+}
+html.bgl-cover::before,html.bgl-leaving::before{
+  content:"";position:fixed;left:50%;top:50%;z-index:2147483647;pointer-events:none;
+  width:clamp(72px,9vw,108px);aspect-ratio:248/262;transform:translate(-50%,-50%);
+  background:url(emblem.png) center/contain no-repeat;
+  filter:drop-shadow(0 18px 40px rgba(0,0,0,.45));
+}
+html.bgl-cover.bgl-reveal::after{animation:bgl-hex-open .74s var(--ease-out) .14s both}
+html.bgl-cover.bgl-reveal::before{animation:bgl-emblem-out .3s var(--ease-in) both}
+html.bgl-cover.bgl-intro.bgl-reveal::after{animation-delay:.62s}
+html.bgl-cover.bgl-intro.bgl-reveal::before{animation:bgl-emblem-intro .86s var(--ease-out) both}
+html.bgl-leaving::after{animation:bgl-hex-close .46s var(--ease-in) both}
+html.bgl-leaving::before{opacity:0;animation:bgl-emblem-in .24s var(--ease-out) .26s both}
+@media (prefers-reduced-motion:reduce){
+  html.bgl-cover::after,html.bgl-cover::before,html.bgl-leaving::after,html.bgl-leaving::before{display:none}
+}
+@media print{html::after,html::before{display:none!important}}
+
+/* ---------- hexágono bipartido como marcador de seção ---------- */
+.kicker::before{
+  width:11px;height:12.5px;flex:none;
+  background:linear-gradient(90deg,var(--hex-navy) 0 50%,var(--hex-plat) 50% 100%);
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+}
+.slide .eyebrow::before,.phero .kicker::before,.platforms .kicker::before,.mega .kicker::before{
+  background:linear-gradient(90deg,#2F6CC2 0 50%,#E9EDF2 50% 100%);
+}
+.slide .eyebrow{display:inline-flex;align-items:center;gap:12px}
+.slide .eyebrow::before{content:"";width:11px;height:12.5px;flex:none;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+
+/* ---------- banner: grande contorno do hexágono, metade azul e metade platina ---------- */
+.hero{position:relative;isolation:isolate}
+.hero::before{
+  content:"";position:absolute;z-index:0;pointer-events:none;
+  right:clamp(-220px,-8vw,-60px);top:50%;width:clamp(520px,52vw,880px);aspect-ratio:1/1.1547;transform:translateY(-50%);
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 230.94'%3E%3Cpath d='M100 1.5 L100 229.44 L1.3 172.45 L1.3 58.49 Z' fill='none' stroke='%232F6CC2' stroke-width='1.1' stroke-opacity='.55'/%3E%3Cpath d='M100 1.5 L198.7 58.49 L198.7 172.45 L100 229.44' fill='none' stroke='%23D5DAE1' stroke-width='1.1' stroke-opacity='.5'/%3E%3Cpath d='M100 24 L100 206.9 L20.8 161.2 L20.8 69.7 Z' fill='none' stroke='%232F6CC2' stroke-width='.6' stroke-opacity='.3'/%3E%3Cpath d='M100 24 L179.2 69.7 L179.2 161.2 L100 206.9' fill='none' stroke='%23D5DAE1' stroke-width='.6' stroke-opacity='.26'/%3E%3C/svg%3E") center/contain no-repeat;
+  opacity:.9;
+}
+.hero .slides,.hero .hero-ctrl{position:relative;z-index:1}
+@media (max-width:760px){.hero::before{width:120vw;right:-60vw;opacity:.5}}
+
+/* páginas internas: o mesmo contorno, menor, atrás da ilustração */
+.phero{isolation:isolate}
+.phero::before{
+  content:"";position:absolute;z-index:0;pointer-events:none;right:clamp(-260px,-12vw,-80px);top:50%;transform:translateY(-50%);width:clamp(420px,40vw,660px);aspect-ratio:1/1.1547;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 230.94'%3E%3Cpath d='M100 1.5 L100 229.44 L1.3 172.45 L1.3 58.49 Z' fill='none' stroke='%232F6CC2' stroke-width='1.1' stroke-opacity='.55'/%3E%3Cpath d='M100 1.5 L198.7 58.49 L198.7 172.45 L100 229.44' fill='none' stroke='%23D5DAE1' stroke-width='1.1' stroke-opacity='.5'/%3E%3Cpath d='M100 24 L100 206.9 L20.8 161.2 L20.8 69.7 Z' fill='none' stroke='%232F6CC2' stroke-width='.6' stroke-opacity='.3'/%3E%3Cpath d='M100 24 L179.2 69.7 L179.2 161.2 L100 206.9' fill='none' stroke='%23D5DAE1' stroke-width='.6' stroke-opacity='.26'/%3E%3C/svg%3E") center/contain no-repeat;opacity:.5;
+}
+.phero>.wrap{position:relative;z-index:1}
+
+/* ---------- ilustrações das soluções com cantos chanfrados a 30°, como as arestas do emblema ---------- */
+.solcard .th,.phero .art,.visual,.screen{
+  clip-path:polygon(0 0,calc(100% - 26px) 0,100% 15px,100% 100%,26px 100%,0 calc(100% - 15px));
+  border-radius:0;
+}
+.screen{box-shadow:none}
+
+/* ---------- marca d'água do emblema no rodapé ---------- */
+footer{overflow:hidden;isolation:isolate}
+footer::after{
+  content:"";position:absolute;z-index:-1;pointer-events:none;right:-70px;bottom:-90px;width:360px;aspect-ratio:248/262;
+  background:url(emblem.png) center/contain no-repeat;opacity:.07;filter:grayscale(.2);
+}
+@media (max-width:760px){footer::after{width:240px;right:-60px;bottom:-60px}}
+
+/* ---------- ícones de garantia dentro do hexágono ---------- */
+.trust .wrap>div>svg{
+  width:44px;height:50px;padding:12px 10px;box-sizing:border-box;margin-top:-4px;
+  background:linear-gradient(90deg,#E7EEF8 0 50%,#EEF1F5 50% 100%);
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+  color:var(--hex-navy-deep);
+}
+.trust .wrap>div{grid-template-columns:44px 1fr;gap:16px}
+
+/* ---------- links que respondem ao toque, sem efeitos gratuitos ---------- */
+.btn{transition:background .2s,border-color .2s,color .2s,transform .2s var(--ease-out)}
+.btn:active{transform:translateY(1px)}
+
+/* o fundo do banner vem da própria seção, para o contorno do hexágono aparecer atrás de cada destaque */
+.hero .slide .art svg>rect{fill:transparent}
+.ctaband h2{line-height:1.1}

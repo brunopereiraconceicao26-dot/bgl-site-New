@@ -92,3 +92,32 @@
     });
   }
 })();
+
+/* Transição entre páginas: o hexágono do emblema BGL fecha a página atual e abre a próxima */
+(function(){
+  var d=document.documentElement, rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function clear(){ d.classList.remove('bgl-cover','bgl-reveal','bgl-intro','bgl-leaving'); }
+  function reveal(){
+    if(!d.classList.contains('bgl-cover')) return;
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      d.classList.add('bgl-reveal');
+      setTimeout(clear, d.classList.contains('bgl-intro')?1500:950);
+    }); });
+  }
+  var ready=(document.fonts&&document.fonts.ready)?document.fonts.ready:Promise.resolve();
+  Promise.race([ready,new Promise(function(r){setTimeout(r,450)})]).then(reveal);
+  window.addEventListener('pageshow',function(e){ if(e.persisted) clear(); });
+  document.addEventListener('click',function(e){
+    if(rm||e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey) return;
+    var a=e.target.closest&&e.target.closest('a[href]'); if(!a) return;
+    if((a.target&&a.target!=='_self')||a.hasAttribute('download')) return;
+    var u; try{ u=new URL(a.getAttribute('href'),location.href); }catch(_){ return; }
+    if(u.protocol!==location.protocol||u.host!==location.host) return;
+    if(u.pathname===location.pathname) return;
+    if(!/(\.html?|\/)$/.test(u.pathname)) return;
+    e.preventDefault();
+    try{ sessionStorage.setItem('bglNav','1'); }catch(_){}
+    d.classList.add('bgl-leaving');
+    setTimeout(function(){ location.href=u.href; },470);
+  });
+})();
