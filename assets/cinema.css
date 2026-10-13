@@ -162,3 +162,42 @@
   .platforms .oil>.screen{order:2!important}
   .platforms .oil::after{left:50%!important;right:auto!important;top:auto;bottom:-6%;transform:translateX(-50%);width:100%}
 }
+
+/* ---------- contato: a atmosfera da foto continua na página ---------- */
+.phero-contato>.wrap{padding-bottom:clamp(150px,16vw,240px)}
+.phero-contato .lead{max-width:44ch}
+.cine-contact{background:linear-gradient(180deg,#020B1F 0%,#061A40 55%,#020B1F 100%);color:#EEF2F8;padding-block:0 clamp(80px,10vw,128px);position:relative}
+.cine-contact .contact-grid{grid-template-columns:minmax(0,5fr) minmax(0,7fr);align-items:start}
+.cine-contact .contact-grid>div{padding-top:clamp(48px,6vw,80px)}
+.cine-contact .kicker{color:#DCE3EC}
+.cine-contact .channels{margin-top:26px}
+.cine-contact .channels li{grid-template-columns:44px 1fr;column-gap:16px;align-items:center;padding:18px 0;border-top-color:rgba(213,218,225,.16)}
+.cine-contact .channels li>*:not(.ci){grid-column:2}
+.cine-contact .channels .ci{grid-row:1/span 2;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid rgba(213,218,225,.2);color:#DCE3EC}
+.cine-contact .channels .ci svg{width:20px;height:20px}
+.cine-contact .channels .label{color:#9FB0C8;font-size:13px}
+.cine-contact .channels a,.cine-contact .channels .v{color:#fff;font-size:19px;font-weight:600}
+.cine-contact .channels a:hover{color:#9CC0F0}
+.cine-contact .copy{border-color:rgba(213,218,225,.35);color:#C7D1E0}
+.btn-wa{margin-top:28px;width:100%;background:#1F9D55;color:#fff;font-weight:600;padding:18px 24px;box-shadow:0 18px 40px -18px rgba(31,157,85,.7)}
+.btn-wa:hover{background:#22AE5E}
+.btn-wa svg{width:20px;height:20px}
+.cine-contact .next{list-style:none;counter-reset:n;margin:36px 0 0;padding:0;display:grid;gap:18px}
+.cine-contact .next li{counter-increment:n;display:grid;grid-template-columns:32px 1fr;column-gap:14px}
+.cine-contact .next li::before{content:counter(n);grid-row:1/span 2;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font:600 14px var(--f-display);color:#020B1F;background:linear-gradient(180deg,#fff,#D5DAE1)}
+.cine-contact .next b{font-weight:600;color:#fff}
+.cine-contact .next span{color:#A8B5CA;font-size:15px}
+.cine-contact .notice{color:#8796AD;margin-top:28px}
+/* formulário elevado sobre a foto */
+.cine-contact form.cf{margin-top:clamp(-120px,-8vw,-80px);position:relative;z-index:3;border:0;color:var(--fg);border-radius:6px;padding:clamp(24px,3.4vw,48px);
+  box-shadow:0 60px 120px -40px rgba(0,0,0,.75),0 0 0 1px rgba(213,218,225,.12)}
+.cine-contact form.cf h3{font-size:clamp(24px,2.4vw,30px);font-weight:600;font-stretch:108%}
+.cine-contact .fld input,.cine-contact .fld select,.cine-contact .fld textarea{min-height:52px;background:var(--bg-2);border-color:var(--line)}
+.cine-contact .fld textarea{min-height:130px}
+.cine-contact .form-foot .btn{padding:18px 32px;font-size:15.5px}
+@media (max-width:900px){
+  .cine-contact .contact-grid{grid-template-columns:1fr}
+  .cine-contact form.cf{order:-1;margin-top:-48px}
+  .phero-contato>.wrap{padding-bottom:96px}
+  .cine-contact .contact-grid>div{padding-top:8px}
+}
