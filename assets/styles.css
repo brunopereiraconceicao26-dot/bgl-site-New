@@ -459,3 +459,4 @@ footer .brand img{height:54px}
 .tgram{border:1px solid var(--dark-line);border-radius:var(--r);overflow:hidden;line-height:0;margin-bottom:12px}
 .tgram svg{width:100%;height:auto;display:block}
 .oil+.oil{margin-top:clamp(64px,8vw,104px);padding-top:clamp(64px,8vw,104px);border-top:1px solid var(--dark-line)}
+@media (max-width:560px){.util .wrap{padding-block:7px}.util .r{gap:4px 16px}.util{font-size:12.5px}}
