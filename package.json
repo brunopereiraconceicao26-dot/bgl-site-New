@@ -1,0 +1,9 @@
+{
+  "name": "bgl-site",
+  "private": true,
+  "description": "Site institucional BGL Group — funções do monitoramento de visitantes",
+  "type": "module",
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.0"
+  }
+}
