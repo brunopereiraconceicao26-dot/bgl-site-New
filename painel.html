@@ -43,6 +43,13 @@ button{font:inherit;cursor:pointer}
 .periodos{display:flex;gap:6px;overflow-x:auto;padding:12px 0;scrollbar-width:none}
 .periodos button{flex:none;border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:999px;padding:6px 14px;font-size:13px}
 .periodos button[aria-pressed="true"]{background:#fff;color:var(--navy-deep);border-color:#fff;font-weight:600}
+.filtros{display:flex;gap:6px;align-items:center;overflow-x:auto;padding:0 0 12px;scrollbar-width:none}
+.filtros button{flex:none;border:0;background:rgba(255,255,255,.1);color:#dfe6f3;border-radius:8px;padding:5px 11px;font-size:12.5px;white-space:nowrap}
+.filtros button[aria-pressed="true"]{background:#2a78d6;color:#fff;font-weight:600}
+.filtros button small{opacity:.75;margin-left:5px;font-variant-numeric:tabular-nums}
+.filtros .sep{flex:none;width:1px;height:18px;background:rgba(255,255,255,.2);margin:0 4px}
+.filtros #robos[aria-pressed="true"]{background:#b4232a}
+.badge.robo{background:#fdecec;color:#8a1c22}
 
 main{padding:16px 0 48px}
 .card{background:var(--card);border-radius:var(--r);border:1px solid var(--line);padding:18px}
@@ -143,6 +150,11 @@ section+section{margin-top:14px}
   <div class="periodos" role="group" aria-label="Período">
     <button data-d="7">7 dias</button><button data-d="30">30 dias</button><button data-d="90">90 dias</button><button data-d="180">6 meses</button><button data-d="365">1 ano</button>
   </div>
+  <div class="filtros" role="group" aria-label="Filtrar visitantes">
+    <button data-l="todos">Todos<small id="cTodos"></small></button><button data-l="br">🇧🇷 Brasil<small id="cBr"></small></button><button data-l="ext">🌎 Exterior<small id="cExt"></small></button>
+    <span class="sep"></span>
+    <button id="robos" aria-pressed="false">🤖 Robôs<small id="cRobos"></small></button>
+  </div>
 </div></header>
 
 <main class="wrap" id="conteudo">
@@ -182,7 +194,7 @@ section+section{margin-top:14px}
     <div id="recentes"></div>
   </section>
 
-  <p class="nota">As visitas feitas deste aparelho depois de entrar no painel não são contadas. Visitantes são identificados de forma anônima, sem cookies e sem dados pessoais.
+  <p class="nota">As visitas feitas deste aparelho depois de entrar no painel não são contadas. Robôs ficam escondidos por padrão: acessos de fora do Brasil vindos de data centers (Meta, Google, Amazon e hospedagens) ou que abrem uma página só e saem na hora. Toque em “🤖 Robôs” para vê-los. Visitantes são identificados de forma anônima, sem cookies e sem dados pessoais.
   Para separar com precisão o tráfego do Instagram, use na bio o link <span class="mono">bglgroup.com.br/?utm_source=instagram</span>. Histórico guardado por até 13 meses.</p>
 </main>
 </div>
@@ -190,7 +202,9 @@ section+section{margin-top:14px}
 <script>
 (function(){
   var $=function(s){return document.querySelector(s)};
-  var CHAVE='bglPainelSenha', senha=null, dias=90, dados=null;
+  var CHAVE='bglPainelSenha', senha=null, dias=90, dados=null, local='todos', robos=false;
+  try{local=localStorage.getItem('bglPainelLocal')||'todos';robos=localStorage.getItem('bglPainelRobos')==='1'}catch(e){}
+  if(['todos','br','ext'].indexOf(local)<0)local='todos';
   var NOMES={google:'Google',instagram:'Instagram',facebook:'Facebook',linkedin:'LinkedIn',whatsapp:'WhatsApp',bing:'Bing',youtube:'YouTube',direto:'Acesso direto',outros:'Outros sites'};
   var COR={google:'var(--s-google)',instagram:'var(--s-insta)'};
   var PAG={'/':'Início','/eletrica':'Elétrica','/ensaios':'Ensaios e diagnóstico','/telecom':'Telecom','/automacao':'Automação','/seguranca':'CFTV e controle de acesso','/incendio':'Alarme de incêndio','/plataformas':'Plataformas','/empresa':'A BGL','/contato':'Contato','/codigo-de-etica':'Código de ética'};
@@ -206,12 +220,16 @@ section+section{margin-top:14px}
   $('#fLogin').addEventListener('submit',function(e){e.preventDefault();senha=$('#senha').value.trim();carregar(true)});
   $('#sair').addEventListener('click',function(){try{localStorage.removeItem(CHAVE)}catch(e){}senha=null;$('#app').hidden=true;$('#login').hidden=false;$('#senha').value=''});
   document.querySelectorAll('.periodos button').forEach(function(b){b.addEventListener('click',function(){dias=+b.dataset.d;carregar()})});
+  document.querySelectorAll('.filtros [data-l]').forEach(function(b){b.addEventListener('click',function(){local=b.dataset.l;try{localStorage.setItem('bglPainelLocal',local)}catch(e){}carregar()})});
+  $('#robos').addEventListener('click',function(){robos=!robos;try{localStorage.setItem('bglPainelRobos',robos?'1':'0')}catch(e){}carregar()});
 
   function carregar(doLogin){
     if(!senha){$('#login').hidden=false;return}
     document.querySelectorAll('.periodos button').forEach(function(b){b.setAttribute('aria-pressed',+b.dataset.d===dias)});
+    document.querySelectorAll('.filtros [data-l]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.l===local)});
+    $('#robos').setAttribute('aria-pressed',robos);
     $('#conteudo').classList.add('carregando');
-    fetch('/api/painel?dias='+dias,{headers:{'x-painel-senha':senha},cache:'no-store'})
+    fetch('/api/painel?dias='+dias+'&local='+local+'&robos='+(robos?1:0),{headers:{'x-painel-senha':senha},cache:'no-store'})
       .then(function(r){if(r.status===401)throw 'senha';if(!r.ok)throw 'falha';return r.json()})
       .then(function(d){
         try{localStorage.setItem(CHAVE,senha);localStorage.setItem('bglNoTrack','1')}catch(e){}
@@ -242,6 +260,8 @@ section+section{margin-top:14px}
       ['<i class="dot" style="background:var(--s-google)"></i>Vindos do Google',num(a.google)+' <small style="font-size:14px;color:var(--ink-3)">'+pct(a.google,a.sessoes)+'%</small>',delta(a.google,b.google)],
       ['<i class="dot" style="background:var(--s-insta)"></i>Vindos do Instagram',num(a.instagram)+' <small style="font-size:14px;color:var(--ink-3)">'+pct(a.instagram,a.sessoes)+'%</small>',delta(a.instagram,b.instagram)]
     ];
+    var c=d.contagem||{};
+    $('#cBr').textContent=num(c.br);$('#cExt').textContent=num(c.ext);$('#cTodos').textContent=num((c.br||0)+(c.ext||0));$('#cRobos').textContent=num(c.robos);
     $('#kpis').innerHTML=k.map(function(x){return '<div class="card kpi"><div class="l">'+x[0]+'</div><div class="v">'+x[1]+'</div><div class="d">'+x[2]+'</div></div>'}).join('');
     grafico(d);fontes(d);paginas(d);recentes(d);
   }
@@ -346,7 +366,7 @@ section+section{margin-top:14px}
       var ref=v.ref&&v.src==='outros'?' <span class="mono" style="font-size:11.5px">('+esc(v.ref)+')</span>':'';
       return '<div class="visita"><div class="h"><time>'+dt.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})+'</time>'+
         '<span class="badge"><i class="dot" style="background:'+corDe(v.src)+'"></i>'+esc(NOMES[v.src]||v.src)+'</span>'+ref+
-        '<span>'+(nd[v.dispositivo]||'')+'</span>'+(local?'<span>📍 '+esc(local)+'</span>':'')+'<span>⏱ '+tempo(v.dur)+'</span></div>'+
+        (v.robo?'<span class="badge robo">🤖 Provável robô</span>':'')+'<span>'+(nd[v.dispositivo]||'')+'</span>'+(local?'<span>📍 '+esc(local)+'</span>':'')+'<span>⏱ '+tempo(v.dur)+'</span></div>'+
         '<div class="trilha">'+v.paginas.map(function(p,i){return (i?'<i>→</i>':'')+'<span>'+esc(nomePag(p.p))+'<em>'+tempo(p.s)+'</em></span>'}).join('')+'</div></div>'}).join('')
       :'<div class="vazio">Nenhuma visita registrada no período.</div>';
   }
